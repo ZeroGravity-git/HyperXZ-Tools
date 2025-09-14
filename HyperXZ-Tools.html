@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperXZ - Love Simulation & Tools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a1a;
+            color: #00ffea;
+            line-height: 1.6;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(28, 12, 114, 0.3) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(114, 12, 64, 0.3) 0%, transparent 20%);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 1px solid #00ffea;
+        }
+        
+        .banner {
+            font-family: monospace;
+            white-space: pre;
+            color: #ff00ff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 12px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+        
+        .card {
+            background-color: rgba(10, 15, 35, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            border: 1px solid #00aaff;
+        }
+        
+        h1, h2, h3 {
+            color: #00ffaa;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px #00ffaa;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ffea;
+        }
+        
+        input[type="text"], input[type="number"], input[type="password"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: rgba(0, 30, 60, 0.5);
+            border: 1px solid #00aaff;
+            border-radius: 5px;
+            color: #00ffea;
+            font-size: 16px;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 8px #00aaff;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #0066ff, #ff00ff);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.4);
+        }
+        
+        #loading {
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #00ffea;
+            margin: 0 5px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .dot:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+        
+        .dot:nth-child(3) {
+            animation-delay: 1s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        #result {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .heart-art {
+            font-family: monospace;
+            white-space: pre;
+            text-align: center;
+            color: #ff0066;
+            margin: 20px 0;
+            font-size: 12px;
+            line-height: 1.2;
+            text-shadow: 0 0 5px #ff0066;
+        }
+        
+        .love-message {
+            font-size: 18px;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: rgba(255, 0, 102, 0.1);
+            border: 1px solid #ff0066;
+        }
+        
+        .credits {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #00ffea;
+            color: #00aaff;
+            font-size: 14px;
+        }
+        
+        .tool-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .tool-list li {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: rgba(0, 170, 255, 0.1);
+            border-radius: 5px;
+            border-left: 3px solid #00aaff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-list li:hover {
+            background-color: rgba(0, 170, 255, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .tool-content {
+            display: none;
+        }
+        
+        .active-tool {
+            display: block;
+        }
+        
+        .password-meter {
+            height: 10px;
+            width: 100%;
+            background-color: rgba(0, 30, 60, 0.5);
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .password-strength {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .result-box {
+            padding: 15px;
+            background-color: rgba(0, 30, 60, 0.5);
+            border-radius: 5px;
+            margin-top: 15px;
+            word-break: break-all;
+        }
+        
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .range-value {
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .converter-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .converter-row input, .converter-row select {
+            flex: 1;
+        }
+        
+        .bmi-result {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        
+        .underweight { background-color: rgba(0, 150, 255, 0.2); border: 1px solid #0096ff; }
+        .normal { background-color: rgba(0, 200, 0, 0.2); border: 1px solid #00c800; }
+        .overweight { background-color: rgba(255, 165, 0, 0.2); border: 1px solid #ffa500; }
+        .obese { background-color: rgba(255, 0, 0, 0.2); border: 1px solid #ff0000; }
+        
+        @media (max-width: 768px) {
+            .banner {
+                font-size: 8px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .converter-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="banner" id="banner">
+     _    _                    __   __ ______
+    | |  | |                   \ \ / /|___  /
+    | |__| |_   _ _ __   ___ _ _\ V /    / /
+    |  __  | | | | '_ \ / _ \ '__> <    / /
+    | |  | | |_| | |_) |  __/ | / . \  / /__
+    |_|  |_|\__, | .__/ \___|_|/_/ \_\/_____|
+             __/ | | Create BY : ZeroGravity
+            |___/|_| Powered BY: HyperXZ Company
+            </div>
+            <h1>HyperXZ Love Simulation & Tools</h1>
+        </header>
+        
+        <!-- Love Simulation Tool -->
+        <div id="love-simulator" class="card tool-content active-tool">
+            <h2>Simulasi Cinta</h2>
+            <p>Masukkan dua nama untuk melihat seberapa cocok mereka!</p>
+            
+            <div class="form-group">
+                <label for="name1">Nama Pertama:</label>
+                <input type="text" id="name1" placeholder="Masukkan nama pertama">
+            </div>
+            
+            <div class="form-group">
+                <label for="name2">Nama Kedua:</label>
+                <input type="text" id="name2" placeholder="Masukkan nama kedua">
+            </div>
+            
+            <h3>Pilihan Persentase Cinta:</h3>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="custom-percent" name="percent-type" value="custom">
+                    <label for="custom-percent">Love Persen (dapat diatur)</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="random-percent" name="percent-type" value="random" checked>
+                    <label for="random-percent">Love Persen (acak)</label>
+                </div>
+            </div>
+            
+            <div class="form-group" id="custom-percent-container" style="display: none;">
+                <label for="custom-percent-value">Masukkan persentase (0-100):</label>
+                <input type="number" id="custom-percent-value" min="0" max="100" placeholder="0-100">
+            </div>
+            
+            <button id="calculate-btn">Hitung Kecocokan</button>
+            
+            <div id="loading">
+                <p>Menghitung kecocokan</p>
+                <div class="dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+            
+            <div id="result">
+                <h2>Hasil Simulasi Cinta</h2>
+                <div id="love-connection"></div>
+                <div id="heart-art" class="heart-art"></div>
+                <div id="love-message" class="love-message"></div>
+            </div>
+        </div>
+        
+        <!-- Password Strength Checker -->
+        <div id="password-checker" class="card tool-content">
+            <h2>Password Strength Checker</h2>
+            <p>Periksa kekuatan password Anda</p>
+            
+            <div class="form-group">
+                <label for="password-input">Masukkan Password:</label>
+                <input type="password" id="password-input" placeholder="Masukkan password">
+            </div>
+            
+            <div class="password-meter">
+                <div id="password-strength-bar" class="password-strength"></div>
+            </div>
+            
+            <div id="password-feedback" class="result-box"></div>
+        </div>
+        
+        <!-- Random Number Generator -->
+        <div id="random-number" class="card tool-content">
+            <h2>Random Number Generator</h2>
+            <p>Hasilkan angka acak dalam rentang tertentu</p>
+            
+            <div class="form-group">
+                <label for="min-value">Nilai Minimum:</label>
+                <input type="number" id="min-value" value="1" min="-1000000" max="1000000">
+            </div>
+            
+            <div class="form-group">
+                <label for="max-value">Nilai Maksimum:</label>
+                <input type="number" id="max-value" value="100" min="-1000000" max="1000000">
+            </div>
+            
+            <div class="form-group">
+                <label for="decimal-places">Jumlah Desimal:</label>
+                <input type="number" id="decimal-places" value="0" min="0" max="10">
+            </div>
+            
+            <button id="generate-random">Hasilkan Angka Acak</button>
+            
+            <div id="random-result" class="result-box"></div>
+        </div>
+        
+        <!-- Text Encryption Tool -->
+        <div id="text-encryption" class="card tool-content">
+            <h2>Text Encryption Tool</h2>
+            <p>Enkripsi atau dekripsi teks dengan metode sederhana</p>
+            
+            <div class="form-group">
+                <label for="encryption-text">Teks:</label>
+                <textarea id="encryption-text" rows="4" placeholder="Masukkan teks untuk dienkripsi/didekripsi"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="encryption-key">Kunci (angka):</label>
+                <input type="number" id="encryption-key" value="3" min="1" max="25">
+            </div>
+            
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="encrypt-option" name="encryption-type" value="encrypt" checked>
+                    <label for="encrypt-option">Enkripsi</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="decrypt-option" name="encryption-type" value="decrypt">
+                    <label for="decrypt-option">Dekripsi</label>
+                </div>
+            </div>
+            
+            <button id="process-encryption">Proses</button>
+            
+            <div id="encryption-result" class="result-box"></div>
+        </div>
+        
+        <!-- BMI Calculator -->
+        <div id="bmi-calculator" class="card tool-content">
+            <h2>BMI Calculator</h2>
+            <p>Hitung Indeks Massa Tubuh (BMI) Anda</p>
+            
+            <div class="form-group">
+                <label for="weight">Berat Badan (kg):</label>
+                <input type="number" id="weight" placeholder="Masukkan berat badan" min="1" max="300">
+            </div>
+            
+            <div class="form-group">
+                <label for="height">Tinggi Badan (cm):</label>
+                <input type="number" id="height" placeholder="Masukkan tinggi badan" min="50" max="250">
+            </div>
+            
+            <button id="calculate-bmi">Hitung BMI</button>
+            
+            <div id="bmi-result" class="result-box"></div>
+        </div>
+        
+        <!-- Currency Converter -->
+        <div id="currency-converter" class="card tool-content">
+            <h2>Currency Converter</h2>
+            <p>Konversi nilai mata uang (nilai tukar tetap)</p>
+            
+            <div class="converter-row">
+                <input type="number" id="amount" placeholder="Jumlah" value="1" min="0">
+                <select id="from-currency">
+                    <option value="USD">USD - Dolar AS</option>
+                    <option value="IDR" selected>IDR - Rupiah Indonesia</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="GBP">GBP - Pound Sterling</option>
+                    <option value="JPY">JPY - Yen Jepang</option>
+                </select>
+            </div>
+            
+            <div class="converter-row">
+                <input type="number" id="converted-amount" placeholder="Hasil" readonly>
+                <select id="to-currency">
+                    <option value="USD">USD - Dolar AS</option>
+                    <option value="IDR">IDR - Rupiah Indonesia</option>
+                    <option value="EUR" selected>EUR - Euro</option>
+                    <option value="GBP">GBP - Pound Sterling</option>
+                    <option value="JPY">JPY - Yen Jepang</option>
+                </select>
+            </div>
+            
+            <button id="convert-currency">Konversi</button>
+            
+            <div id="conversion-info" class="result-box"></div>
+        </div>
+        
+        <!-- Tools Navigation -->
+        <div class="card">
+            <h2>Tools HyperXZ</h2>
+            <ul class="tool-list">
+                <li data-tool="love-simulator">Love Simulation</li>
+                <li data-tool="password-checker">Password Strength Checker</li>
+                <li data-tool="random-number">Random Number Generator</li>
+                <li data-tool="text-encryption">Text Encryption Tool</li>
+                <li data-tool="bmi-calculator">BMI Calculator</li>
+                <li data-tool="currency-converter">Currency Converter</li>
+            </ul>
+            <p>Klik pada tool untuk menggunakannya!</p>
+        </div>
+        
+        <div class="credits">
+            <p>Created by ZeroGravity</p>
+            <p>HyperXZ Tools</p>
+            <p>TikTok : @zerogravity990</p>
+            <p>GitHub : ZeroGravity-git</p>
+        </div>
+    </div>
+
+    <script>
+        // Nilai tukar mata uang (tetap)
+        const exchangeRates = {
+            USD: { USD: 1, IDR: 14500, EUR: 0.85, GBP: 0.75, JPY: 110 },
+            IDR: { USD: 0.000069, IDR: 1, EUR: 0.000059, GBP: 0.000052, JPY: 0.0076 },
+            EUR: { USD: 1.18, IDR: 17000, EUR: 1, GBP: 0.88, JPY: 130 },
+            GBP: { USD: 1.33, IDR: 19200, EUR: 1.14, GBP: 1, JPY: 147 },
+            JPY: { USD: 0.0091, IDR: 132, EUR: 0.0077, GBP: 0.0068, JPY: 1 }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Referensi elemen untuk navigasi tool
+            const toolItems = document.querySelectorAll('.tool-list li');
+            const toolContents = document.querySelectorAll('.tool-content');
+            
+            // Fungsi untuk menampilkan tool yang dipilih
+            function showTool(toolId) {
+                toolContents.forEach(content => {
+                    content.classList.remove('active-tool');
+                });
+                
+                document.getElementById(toolId).classList.add('active-tool');
+            }
+            
+            // Event listener untuk navigasi tool
+            toolItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const toolId = this.getAttribute('data-tool');
+                    showTool(toolId);
+                });
+            });
+            
+            // Love Simulation
+            const customPercentRadio = document.getElementById('custom-percent');
+            const randomPercentRadio = document.getElementById('random-percent');
+            const customPercentContainer = document.getElementById('custom-percent-container');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const loadingElement = document.getElementById('loading');
+            const resultElement = document.getElementById('result');
+            const loveConnectionElement = document.getElementById('love-connection');
+            const heartArtElement = document.getElementById('heart-art');
+            const loveMessageElement = document.getElementById('love-message');
+            
+            // Toggle custom percentage input
+            customPercentRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    customPercentContainer.style.display = 'block';
+                }
+            });
+            
+            randomPercentRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    customPercentContainer.style.display = 'none';
+                }
+            });
+            
+            // Calculate love compatibility
+            calculateBtn.addEventListener('click', function() {
+                const name1 = document.getElementById('name1').value.trim();
+                const name2 = document.getElementById('name2').value.trim();
+                
+                if (!name1 || !name2) {
+                    alert('Mohon masukkan kedua nama!');
+                    return;
+                }
+                
+                let percentage;
+                if (customPercentRadio.checked) {
+                    percentage = parseInt(document.getElementById('custom-percent-value').value);
+                    if (isNaN(percentage) || percentage < 0 || percentage > 100) {
+                        alert('Persentase harus antara 0-100. Menggunakan nilai acak.');
+                        percentage = Math.floor(Math.random() * 101);
+                    }
+                } else {
+                    percentage = Math.floor(Math.random() * 101);
+                }
+                
+                // Show loading
+                loadingElement.style.display = 'block';
+                resultElement.style.display = 'none';
+                
+                // Simulate calculation delay
+                setTimeout(function() {
+                    // Hide loading and show result
+                    loadingElement.style.display = 'none';
+                    resultElement.style.display = 'block';
+                    
+                    // Display love connection
+                    loveConnectionElement.innerHTML = `<h3>Love Connection: ${name1} ❤️ ${name2}</h3>`;
+                    
+                    // Generate heart art
+                    const heartArt = generateHeartArt(name1, name2, percentage);
+                    heartArtElement.textContent = heartArt;
+                    
+                    // Display love message
+                    let message;
+                    if (percentage >= 80) {
+                        message = "Anda sangat cocok! ❤️";
+                    } else if (percentage >= 60) {
+                        message = "Anda cukup cocok! 💕";
+                    } else if (percentage >= 40) {
+                        message = "Hubungan perlu usaha lebih! 💝";
+                    } else {
+                        message = "Mungkin bukan jodoh! 💔";
+                    }
+                    
+                    loveMessageElement.textContent = `${percentage}% - ${message}`;
+                }, 2000);
+            });
+            
+            function generateHeartArt(name1, name2, percentage) {
+                // Pola hati dalam ASCII
+                let heart = [
+                   "    ______         ______     ",
+                   "   /      \\       /      \\    ",
+                   "  /        \\     /        \\   ",
+                   " /          \\___/          \\  ",
+                   "|                           | ",
+                   "\\                           /",
+                   " \\_                       _/   ",
+                   "   \\_                   _/   ",
+                   "     \\_               _/     ",
+                   "       \\_           _/       ",
+                   "         \\_       _/         ",
+                   "           \\_   _/           ",
+                   "             \\_/             "
+                ];
+                
+                // Jika ada persentase, tambahkan ke dalam hati
+                if (percentage !== undefined) {
+                    // Pilih baris tengah untuk menampilkan persentase
+                    const centerLine = 5;
+                    let line = heart[centerLine];
+                    const percentText = ` ${percentage}% `;
+                    
+                    // Hitung posisi tengah
+                    const mid = Math.floor(line.length / 2);
+                    const start = mid - Math.floor(percentText.length / 2);
+                    const end = start + percentText.length;
+                    
+                    // Buat baris baru dengan persentase
+                    const newLine = line.substring(0, start) + percentText + line.substring(end);
+                    heart[centerLine] = newLine;
+                }
+                
+                // Format output dengan nama
+                let output = "";
+                for (let i = 0; i < heart.length; i++) {
+                    if (i === 0) {
+                        output += `${name1.padStart(12)} ${heart[i]} ${name2.padEnd(12)}\n`;
+                    } else {
+                        output += `${" ".padStart(12)} ${heart[i]} ${" ".padEnd(12)}\n`;
+                    }
+                }
+                
+                return output;
+            }
+            
+            // Password Strength Checker
+            const passwordInput = document.getElementById('password-input');
+            const strengthBar = document.getElementById('password-strength-bar');
+            const passwordFeedback = document.getElementById('password-feedback');
+            
+            passwordInput.addEventListener('input', checkPasswordStrength);
+            
+            function checkPasswordStrength() {
+                const password = passwordInput.value;
+                let strength = 0;
+                let feedback = "";
+                
+                if (password.length === 0) {
+                    strengthBar.style.width = '0%';
+                    strengthBar.style.backgroundColor = '#555';
+                    passwordFeedback.textContent = '';
+                    return;
+                }
+                
+                // Kriteria kekuatan password
+                if (password.length >= 8) strength += 25;
+                if (/[A-Z]/.test(password)) strength += 25;
+                if (/[0-9]/.test(password)) strength += 25;
+                if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+                
+                // Update tampilan
+                strengthBar.style.width = `${strength}%`;
+                
+                if (strength < 50) {
+                    strengthBar.style.backgroundColor = '#ff4d4d';
+                    feedback = "Password lemah. Gunakan lebih banyak karakter, huruf kapital, angka, dan simbol.";
+                } else if (strength < 75) {
+                    strengthBar.style.backgroundColor = '#ffa64d';
+                    feedback = "Password cukup. Bisa lebih kuat dengan menambahkan karakter khusus atau angka.";
+                } else if (strength < 100) {
+                    strengthBar.style.backgroundColor = '#ffff4d';
+                    feedback = "Password kuat. Tetap aman!";
+                } else {
+                    strengthBar.style.backgroundColor = '#00cc00';
+                    feedback = "Password sangat kuat! Sangat sulit untuk diretas.";
+                }
+                
+                passwordFeedback.textContent = feedback;
+            }
+            
+            // Random Number Generator
+            const generateRandomBtn = document.getElementById('generate-random');
+            const randomResult = document.getElementById('random-result');
+            
+            generateRandomBtn.addEventListener('click', function() {
+                const min = parseFloat(document.getElementById('min-value').value);
+                const max = parseFloat(document.getElementById('max-value').value);
+                const decimals = parseInt(document.getElementById('decimal-places').value);
+                
+                if (isNaN(min) || isNaN(max)) {
+                    randomResult.textContent = "Masukkan nilai minimum dan maksimum yang valid.";
+                    return;
+                }
+                
+                if (min >= max) {
+                    randomResult.textContent = "Nilai minimum harus lebih kecil dari nilai maksimum.";
+                    return;
+                }
+                
+                let randomNum = Math.random() * (max - min) + min;
+                
+                if (decimals > 0) {
+                    randomNum = parseFloat(randomNum.toFixed(decimals));
+                } else {
+                    randomNum = Math.floor(randomNum);
+                }
+                
+                randomResult.textContent = `Angka acak: ${randomNum}`;
+            });
+            
+            // Text Encryption Tool
+            const processEncryptionBtn = document.getElementById('process-encryption');
+            const encryptionResult = document.getElementById('encryption-result');
+            
+            processEncryptionBtn.addEventListener('click', function() {
+                const text = document.getElementById('encryption-text').value;
+                const key = parseInt(document.getElementById('encryption-key').value);
+                const isEncrypt = document.getElementById('encrypt-option').checked;
+                
+                if (!text) {
+                    encryptionResult.textContent = "Masukkan teks terlebih dahulu.";
+                    return;
+                }
+                
+                let result = "";
+                
+                if (isEncrypt) {
+                    result = encryptText(text, key);
+                } else {
+                    result = decryptText(text, key);
+                }
+                
+                encryptionResult.textContent = result;
+            });
+            
+            function encryptText(text, key) {
+                let result = "";
+                
+                for (let i = 0; i < text.length; i++) {
+                    let charCode = text.charCodeAt(i);
+                    
+                    // Enkripsi karakter (hanya untuk karakter alfabet)
+                    if (charCode >= 65 && charCode <= 90) { // Huruf kapital
+                        result += String.fromCharCode(((charCode - 65 + key) % 26) + 65);
+                    } else if (charCode >= 97 && charCode <= 122) { // Huruf kecil
+                        result += String.fromCharCode(((charCode - 97 + key) % 26) + 97);
+                    } else {
+                        result += text.charAt(i); // Biarkan karakter non-alfabet tetap
+                    }
+                }
+                
+                return result;
+            }
+            
+            function decryptText(text, key) {
+                let result = "";
+                
+                for (let i = 0; i < text.length; i++) {
+                    let charCode = text.charCodeAt(i);
+                    
+                    // Dekripsi karakter (hanya untuk karakter alfabet)
+                    if (charCode >= 65 && charCode <= 90) { // Huruf kapital
+                        result += String.fromCharCode(((charCode - 65 - key + 26) % 26) + 65);
+                    } else if (charCode >= 97 && charCode <= 122) { // Huruf kecil
+                        result += String.fromCharCode(((charCode - 97 - key + 26) % 26) + 97);
+                    } else {
+                        result += text.charAt(i); // Biarkan karakter non-alfabet tetap
+                    }
+                }
+                
+                return result;
+            }
+            
+            // BMI Calculator
+            const calculateBmiBtn = document.getElementById('calculate-bmi');
+            const bmiResult = document.getElementById('bmi-result');
+            
+            calculateBmiBtn.addEventListener('click', function() {
+                const weight = parseFloat(document.getElementById('weight').value);
+                const height = parseFloat(document.getElementById('height').value) / 100; // Convert cm to m
+                
+                if (isNaN(weight) || isNaN(height) || height === 0) {
+                    bmiResult.textContent = "Masukkan berat dan tinggi yang valid.";
+                    return;
+                }
+                
+                const bmi = weight / (height * height);
+                const roundedBmi = bmi.toFixed(1);
+                
+                let category = "";
+                let categoryClass = "";
+                
+                if (bmi < 18.5) {
+                    category = "Kekurangan berat badan";
+                    categoryClass = "underweight";
+                } else if (bmi < 25) {
+                    category = "Normal (ideal)";
+                    categoryClass = "normal";
+                } else if (bmi < 30) {
+                    category = "Kelebihan berat badan";
+                    categoryClass = "overweight";
+                } else {
+                    category = "Obesitas";
+                    categoryClass = "obese";
+                }
+                
+                bmiResult.innerHTML = `
+                    <div class="bmi-result ${categoryClass}">
+                        <p>BMI Anda: <strong>${roundedBmi}</strong></p>
+                        <p>Kategori: <strong>${category}</strong></p>
+                    </div>
+                `;
+            });
+            
+            // Currency Converter
+            const amountInput = document.getElementById('amount');
+            const fromCurrency = document.getElementById('from-currency');
+            const toCurrency = document.getElementById('to-currency');
+            const convertedAmount = document.getElementById('converted-amount');
+            const convertCurrencyBtn = document.getElementById('convert-currency');
+            const conversionInfo = document.getElementById('conversion-info');
+            
+            // Event listeners
+            amountInput.addEventListener('input', convertCurrency);
+            fromCurrency.addEventListener('change', convertCurrency);
+            toCurrency.addEventListener('change', convertCurrency);
+            convertCurrencyBtn.addEventListener('click', convertCurrency);
+            
+            function convertCurrency() {
+                const amount = parseFloat(amountInput.value);
+                
+                if (isNaN(amount) || amount < 0) {
+                    convertedAmount.value = "";
+                    conversionInfo.textContent = "Masukkan jumlah yang valid.";
+                    return;
+                }
+                
+                const from = fromCurrency.value;
+                const to = toCurrency.value;
+                
+                const rate = exchangeRates[from][to];
+                const result = amount * rate;
+                
+                convertedAmount.value = result.toFixed(2);
+                conversionInfo.textContent = `1 ${from} = ${rate} ${to}`;
+            }
+            
+            // Inisialisasi konversi saat halaman dimuat
+            convertCurrency();
+        });
+    </script>
+</body>
+</html>
