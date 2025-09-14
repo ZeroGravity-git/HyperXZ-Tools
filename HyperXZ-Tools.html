@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HyperXZ - Love Simulation & Tools</title>
+    <title>HyperXZ - Ultimate Hacking Tools</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
         }
         
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -70,7 +70,7 @@
             color: #00ffea;
         }
         
-        input[type="text"], input[type="number"], input[type="password"], select, textarea {
+        input[type="text"], input[type="number"], input[type="password"], input[type="email"], select, textarea {
             width: 100%;
             padding: 12px;
             background-color: rgba(0, 30, 60, 0.5);
@@ -145,7 +145,7 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
         
-        #result {
+        .result-container {
             display: none;
             text-align: center;
             margin-top: 30px;
@@ -162,7 +162,7 @@
             text-shadow: 0 0 5px #ff0066;
         }
         
-        .love-message {
+        .message {
             font-size: 18px;
             margin: 20px 0;
             padding: 15px;
@@ -183,21 +183,24 @@
         .tool-list {
             list-style-type: none;
             padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
         }
         
         .tool-list li {
-            padding: 10px;
-            margin: 10px 0;
+            padding: 15px;
             background-color: rgba(0, 170, 255, 0.1);
             border-radius: 5px;
             border-left: 3px solid #00aaff;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-align: center;
         }
         
         .tool-list li:hover {
             background-color: rgba(0, 170, 255, 0.3);
-            transform: translateX(5px);
+            transform: translateY(-3px);
         }
         
         .tool-content {
@@ -265,6 +268,39 @@
         .overweight { background-color: rgba(255, 165, 0, 0.2); border: 1px solid #ffa500; }
         .obese { background-color: rgba(255, 0, 0, 0.2); border: 1px solid #ff0000; }
         
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            background-color: rgba(0, 30, 60, 0.5);
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid #00aaff;
+        }
+        
+        .tab.active {
+            background-color: rgba(0, 170, 255, 0.3);
+        }
+        
+        .morse-output {
+            font-family: monospace;
+            font-size: 20px;
+            letter-spacing: 5px;
+        }
+        
+        .number-list {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: rgba(0, 30, 60, 0.5);
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
         @media (max-width: 768px) {
             .banner {
                 font-size: 8px;
@@ -278,6 +314,10 @@
             .converter-row {
                 flex-direction: column;
             }
+            
+            .tool-list {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -285,20 +325,40 @@
     <div class="container">
         <header>
             <div class="banner" id="banner">
-     _    _                    __   __ ______
-    | |  | |                   \ \ / /|___  /
+      _    _                    __   __ ______
+     | |  | |                   \ \ / /|___  /
     | |__| |_   _ _ __   ___ _ _\ V /    / /
-    |  __  | | | | '_ \ / _ \ '__> <    / /
+   |  __  | | | | '_ \ / _ \ '__> <    / /
     | |  | | |_| | |_) |  __/ | / . \  / /__
-    |_|  |_|\__, | .__/ \___|_|/_/ \_\/_____|
+     |_|  |_|\__, | .__/ \___|_|/_/ \_\/_____|
              __/ | | Create BY : ZeroGravity
-            |___/|_| Powered BY: HyperXZ Company
+                |___/|_| Powered BY: HyperXZ Company
+               Just For Have Fun
             </div>
-            <h1>HyperXZ Love Simulation & Tools</h1>
+            <h1>HyperXZ Ultimate Hacking Tools</h1>
         </header>
         
+        <!-- Tools Navigation -->
+        <div class="card">
+            <h2>HyperXZ Tools</h2>
+            <ul class="tool-list">
+                <li data-tool="love-simulator">Love Simulation</li>
+                <li data-tool="password-checker">Password Strength Checker</li>
+                <li data-tool="random-number">Random Number Generator</li>
+                <li data-tool="text-encryption">Text Encryption Tool</li>
+                <li data-tool="bmi-calculator">BMI Calculator</li>
+                <li data-tool="currency-converter">Currency Converter</li>
+                <li data-tool="morse-code">Morse Code Translator</li>
+                <li data-tool="morse-art">Morse Code Art</li>
+                <li data-tool="osint-tools">OSINT Tools</li>
+                <li data-tool="phishing-generator">Phishing Link Generator</li>
+                <li data-tool="number-generator">Number Generators</li>
+            </ul>
+            <p>Klik pada tool untuk menggunakannya!</p>
+        </div>
+        
         <!-- Love Simulation Tool -->
-        <div id="love-simulator" class="card tool-content active-tool">
+        <div id="love-simulator" class="card tool-content">
             <h2>Simulasi Cinta</h2>
             <p>Masukkan dua nama untuk melihat seberapa cocok mereka!</p>
             
@@ -331,7 +391,7 @@
             
             <button id="calculate-btn">Hitung Kecocokan</button>
             
-            <div id="loading">
+            <div id="loading-love" class="loading">
                 <p>Menghitung kecocokan</p>
                 <div class="dots">
                     <span class="dot"></span>
@@ -340,11 +400,11 @@
                 </div>
             </div>
             
-            <div id="result">
+            <div id="result-love" class="result-container">
                 <h2>Hasil Simulasi Cinta</h2>
                 <div id="love-connection"></div>
                 <div id="heart-art" class="heart-art"></div>
-                <div id="love-message" class="love-message"></div>
+                <div id="love-message" class="message"></div>
             </div>
         </div>
         
@@ -473,18 +533,214 @@
             <div id="conversion-info" class="result-box"></div>
         </div>
         
-        <!-- Tools Navigation -->
-        <div class="card">
-            <h2>Tools HyperXZ</h2>
-            <ul class="tool-list">
-                <li data-tool="love-simulator">Love Simulation</li>
-                <li data-tool="password-checker">Password Strength Checker</li>
-                <li data-tool="random-number">Random Number Generator</li>
-                <li data-tool="text-encryption">Text Encryption Tool</li>
-                <li data-tool="bmi-calculator">BMI Calculator</li>
-                <li data-tool="currency-converter">Currency Converter</li>
-            </ul>
-            <p>Klik pada tool untuk menggunakannya!</p>
+        <!-- Morse Code Translator -->
+        <div id="morse-code" class="card tool-content">
+            <h2>Morse Code Translator</h2>
+            <p>Terjemahkan teks ke sandi Morse atau sebaliknya</p>
+            
+            <div class="form-group">
+                <label for="morse-input">Input:</label>
+                <textarea id="morse-input" rows="4" placeholder="Masukkan teks atau kode Morse"></textarea>
+            </div>
+            
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="text-to-morse" name="morse-type" value="text-to-morse" checked>
+                    <label for="text-to-morse">Teks ke Morse</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="morse-to-text" name="morse-type" value="morse-to-text">
+                    <label for="morse-to-text">Morse ke Teks</label>
+                </div>
+            </div>
+            
+            <button id="translate-morse">Terjemahkan</button>
+            
+            <div id="morse-result" class="result-box"></div>
+        </div>
+        
+        <!-- Morse Code Art -->
+        <div id="morse-art" class="card tool-content">
+            <h2>Morse Code Art Generator</h2>
+            <p>Buat seni ASCII dari kode Morse</p>
+            
+            <div class="form-group">
+                <label for="morse-art-input">Teks:</label>
+                <input type="text" id="morse-art-input" placeholder="Masukkan teks untuk diubah menjadi Morse Art">
+            </div>
+            
+            <button id="generate-morse-art">Generate Morse Art</button>
+            
+            <div id="morse-art-result" class="result-box"></div>
+        </div>
+        
+        <!-- OSINT Tools -->
+        <div id="osint-tools" class="card tool-content">
+            <h2>OSINT Tools</h2>
+            <p>Alat Open Source Intelligence (OSINT)</p>
+            
+            <div class="tab-container">
+                <div class="tab active" data-tab="osint-numbers">Numbers</div>
+                <div class="tab" data-tab="osint-email">Email</div>
+                <div class="tab" data-tab="osint-passport">Passport</div>
+                <div class="tab" data-tab="osint-password">Password</div>
+                <div class="tab" data-tab="osint-location">Location</div>
+            </div>
+            
+            <!-- OSINT Numbers -->
+            <div id="osint-numbers" class="osint-tab active">
+                <div class="form-group">
+                    <label for="phone-number">Nomor Telepon:</label>
+                    <input type="text" id="phone-number" placeholder="Masukkan nomor telepon (contoh: +628123456789)">
+                </div>
+                <button id="search-phone">Cari Informasi</button>
+                <div id="phone-result" class="result-box"></div>
+            </div>
+            
+            <!-- OSINT Email -->
+            <div id="osint-email" class="osint-tab" style="display: none;">
+                <div class="form-group">
+                    <label for="email-address">Alamat Email:</label>
+                    <input type="email" id="email-address" placeholder="Masukkan alamat email">
+                </div>
+                <button id="search-email">Cari Informasi</button>
+                <div id="email-result" class="result-box"></div>
+            </div>
+            
+            <!-- OSINT Passport -->
+            <div id="osint-passport" class="osint-tab" style="display: none;">
+                <div class="form-group">
+                    <label for="passport-number">Nomor Passport:</label>
+                    <input type="text" id="passport-number" placeholder="Masukkan nomor passport">
+                </div>
+                <button id="search-passport">Cari Informasi</button>
+                <div id="passport-result" class="result-box"></div>
+            </div>
+            
+            <!-- OSINT Password -->
+            <div id="osint-password" class="osint-tab" style="display: none;">
+                <div class="form-group">
+                    <label for="password-hash">Password Hash:</label>
+                    <input type="text" id="password-hash" placeholder="Masukkan hash password">
+                </div>
+                <button id="search-password">Cari Informasi</button>
+                <div id="password-hash-result" class="result-box"></div>
+            </div>
+            
+            <!-- OSINT Location -->
+            <div id="osint-location" class="osint-tab" style="display: none;">
+                <div class="form-group">
+                    <label for="location-coords">Koordinat (Latitude, Longitude):</label>
+                    <input type="text" id="location-coords" placeholder="Contoh: -6.2088, 106.8456">
+                </div>
+                <button id="search-location">Cari Informasi</button>
+                <div id="location-result" class="result-box"></div>
+            </div>
+        </div>
+        
+        <!-- Phishing Link Generator -->
+        <div id="phishing-generator" class="card tool-content">
+            <h2>Phishing Link Generator (Edukasi Keamanan)</h2>
+            <p>Alat ini hanya untuk tujuan edukasi tentang keamanan siber</p>
+            
+            <div class="form-group">
+                <label for="original-url">URL Asli:</label>
+                <input type="text" id="original-url" placeholder="Masukkan URL website yang ingin disimulasikan">
+            </div>
+            
+            <div class="form-group">
+                <label for="phishing-domain">Domain Phishing (opsional):</label>
+                <input type="text" id="phishing-domain" placeholder="Contoh: secure-login.com">
+            </div>
+            
+            <button id="generate-phishing">Generate Link (Edukasi)</button>
+            
+            <div id="phishing-result" class="result-box"></div>
+            <div class="message">
+                <strong>Peringatan:</strong> Alat ini hanya untuk tujuan edukasi keamanan siber. 
+                Jangan gunakan untuk aktivitas ilegal. Selalu dapatkan izin sebelum melakukan pengujian keamanan.
+            </div>
+        </div>
+        
+        <!-- Number Generators -->
+        <div id="number-generator" class="card tool-content">
+            <h2>Number Generators</h2>
+            <p>Generate berbagai jenis deret angka</p>
+            
+            <div class="tab-container">
+                <div class="tab active" data-tab="ganjil-genap">Ganjil/Genap</div>
+                <div class="tab" data-tab="prima">Prima</div>
+                <div class="tab" data-tab="phi">Phi</div>
+                <div class="tab" data-tab="golden-ratio">Golden Ratio</div>
+            </div>
+            
+            <!-- Ganjil/Genap -->
+            <div id="ganjil-genap" class="number-tab active">
+                <div class="form-group">
+                    <label for="range-start">Mulai dari:</label>
+                    <input type="number" id="range-start" value="1" min="0" max="1000000">
+                </div>
+                
+                <div class="form-group">
+                    <label for="range-end">Sampai dengan:</label>
+                    <input type="number" id="range-end" value="100" min="1" max="1000000">
+                </div>
+                
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="ganjil-only" name="number-type" value="ganjil">
+                        <label for="ganjil-only">Ganjil saja</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="genap-only" name="number-type" value="genap">
+                        <label for="genap-only">Genap saja</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="both-types" name="number-type" value="both" checked>
+                        <label for="both-types">Keduanya (dipisah)</label>
+                    </div>
+                </div>
+                
+                <button id="generate-numbers">Generate Numbers</button>
+                
+                <div id="number-result" class="number-list"></div>
+            </div>
+            
+            <!-- Prima -->
+            <div id="prima" class="number-tab" style="display: none;">
+                <div class="form-group">
+                    <label for="prima-limit">Batas atas (n):</label>
+                    <input type="number" id="prima-limit" value="100" min="2" max="100000">
+                </div>
+                
+                <button id="generate-prima">Generate Bilangan Prima</button>
+                
+                <div id="prima-result" class="number-list"></div>
+            </div>
+            
+            <!-- Phi -->
+            <div id="phi" class="number-tab" style="display: none;">
+                <div class="form-group">
+                    <label for="phi-iterations">Jumlah Iterasi:</label>
+                    <input type="number" id="phi-iterations" value="10" min="1" max="100">
+                </div>
+                
+                <button id="generate-phi">Generate Nilai Phi</button>
+                
+                <div id="phi-result" class="result-box"></div>
+            </div>
+            
+            <!-- Golden Ratio -->
+            <div id="golden-ratio" class="number-tab" style="display: none;">
+                <div class="form-group">
+                    <label for="gr-iterations">Jumlah Iterasi:</label>
+                    <input type="number" id="gr-iterations" value="10" min="1" max="100">
+                </div>
+                
+                <button id="generate-gr">Generate Golden Ratio</button>
+                
+                <div id="gr-result" class="result-box"></div>
+            </div>
         </div>
         
         <div class="credits">
@@ -496,14 +752,26 @@
     </div>
 
     <script>
-        // Nilai tukar mata uang (tetap)
-        const exchangeRates = {
-            USD: { USD: 1, IDR: 14500, EUR: 0.85, GBP: 0.75, JPY: 110 },
-            IDR: { USD: 0.000069, IDR: 1, EUR: 0.000059, GBP: 0.000052, JPY: 0.0076 },
-            EUR: { USD: 1.18, IDR: 17000, EUR: 1, GBP: 0.88, JPY: 130 },
-            GBP: { USD: 1.33, IDR: 19200, EUR: 1.14, GBP: 1, JPY: 147 },
-            JPY: { USD: 0.0091, IDR: 132, EUR: 0.0077, GBP: 0.0068, JPY: 1 }
+        // Morse code dictionary
+        const morseCode = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 
+            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 
+            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 
+            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 
+            'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', 
+            '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', 
+            '8': '---..', '9': '----.', '.': '.-.-.-', ',': '--..--', '?': '..--..', 
+            "'": '.----.', '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-', 
+            '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.', 
+            '-': '-....-', '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-.', 
+            ' ': '/'
         };
+
+        // Reverse morse code dictionary (morse to text)
+        const reverseMorse = {};
+        for (const [key, value] of Object.entries(morseCode)) {
+            reverseMorse[value] = key;
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
             // Referensi elemen untuk navigasi tool
@@ -527,13 +795,49 @@
                 });
             });
             
+            // Tab functionality for OSINT Tools
+            const osintTabs = document.querySelectorAll('.osint-tab');
+            const osintTabButtons = document.querySelectorAll('.tab[data-tab^="osint"]');
+            
+            osintTabButtons.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and content
+                    osintTabButtons.forEach(t => t.classList.remove('active'));
+                    osintTabs.forEach(t => t.style.display = 'none');
+                    
+                    // Add active class to current tab and show content
+                    this.classList.add('active');
+                    document.getElementById(tabId).style.display = 'block';
+                });
+            });
+            
+            // Tab functionality for Number Generators
+            const numberTabs = document.querySelectorAll('.number-tab');
+            const numberTabButtons = document.querySelectorAll('.tab[data-tab^="ganjil"], .tab[data-tab^="prima"], .tab[data-tab^="phi"], .tab[data-tab^="golden"]');
+            
+            numberTabButtons.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and content
+                    numberTabButtons.forEach(t => t.classList.remove('active'));
+                    numberTabs.forEach(t => t.style.display = 'none');
+                    
+                    // Add active class to current tab and show content
+                    this.classList.add('active');
+                    document.getElementById(tabId).style.display = 'block';
+                });
+            });
+            
             // Love Simulation
             const customPercentRadio = document.getElementById('custom-percent');
             const randomPercentRadio = document.getElementById('random-percent');
             const customPercentContainer = document.getElementById('custom-percent-container');
             const calculateBtn = document.getElementById('calculate-btn');
-            const loadingElement = document.getElementById('loading');
-            const resultElement = document.getElementById('result');
+            const loadingElement = document.getElementById('loading-love');
+            const resultElement = document.getElementById('result-love');
             const loveConnectionElement = document.getElementById('love-connection');
             const heartArtElement = document.getElementById('heart-art');
             const loveMessageElement = document.getElementById('love-message');
@@ -840,6 +1144,15 @@
             const convertCurrencyBtn = document.getElementById('convert-currency');
             const conversionInfo = document.getElementById('conversion-info');
             
+            // Nilai tukar mata uang (tetap)
+            const exchangeRates = {
+                USD: { USD: 1, IDR: 14500, EUR: 0.85, GBP: 0.75, JPY: 110 },
+                IDR: { USD: 0.000069, IDR: 1, EUR: 0.000059, GBP: 0.000052, JPY: 0.0076 },
+                EUR: { USD: 1.18, IDR: 17000, EUR: 1, GBP: 0.88, JPY: 130 },
+                GBP: { USD: 1.33, IDR: 19200, EUR: 1.14, GBP: 1, JPY: 147 },
+                JPY: { USD: 0.0091, IDR: 132, EUR: 0.0077, GBP: 0.0068, JPY: 1 }
+            };
+            
             // Event listeners
             amountInput.addEventListener('input', convertCurrency);
             fromCurrency.addEventListener('change', convertCurrency);
@@ -867,6 +1180,255 @@
             
             // Inisialisasi konversi saat halaman dimuat
             convertCurrency();
+            
+            // Morse Code Translator
+            const translateMorseBtn = document.getElementById('translate-morse');
+            const morseResult = document.getElementById('morse-result');
+            
+            translateMorseBtn.addEventListener('click', function() {
+                const input = document.getElementById('morse-input').value;
+                const isTextToMorse = document.getElementById('text-to-morse').checked;
+                
+                if (!input) {
+                    morseResult.textContent = "Masukkan teks atau kode Morse terlebih dahulu.";
+                    return;
+                }
+                
+                let result = "";
+                
+                if (isTextToMorse) {
+                    // Convert text to Morse code
+                    result = textToMorse(input.toUpperCase());
+                } else {
+                    // Convert Morse code to text
+                    result = morseToText(input);
+                }
+                
+                morseResult.innerHTML = `<div class="morse-output">${result}</div>`;
+            });
+            
+            function textToMorse(text) {
+                let result = "";
+                for (let i = 0; i < text.length; i++) {
+                    const char = text[i];
+                    if (morseCode[char]) {
+                        result += morseCode[char] + " ";
+                    } else {
+                        result += char + " ";
+                    }
+                }
+                return result.trim();
+            }
+            
+            function morseToText(morse) {
+                const words = morse.split(' / ');
+                let result = "";
+                
+                for (let i = 0; i < words.length; i++) {
+                    const letters = words[i].split(' ');
+                    for (let j = 0; j < letters.length; j++) {
+                        if (reverseMorse[letters[j]]) {
+                            result += reverseMorse[letters[j]];
+                        } else {
+                            result += letters[j];
+                        }
+                    }
+                    if (i < words.length - 1) {
+                        result += " ";
+                    }
+                }
+                
+                return result;
+            }
+            
+            // Morse Code Art Generator
+            const generateMorseArtBtn = document.getElementById('generate-morse-art');
+            const morseArtResult = document.getElementById('morse-art-result');
+            
+            generateMorseArtBtn.addEventListener('click', function() {
+                const text = document.getElementById('morse-art-input').value.toUpperCase();
+                
+                if (!text) {
+                    morseArtResult.textContent = "Masukkan teks terlebih dahulu.";
+                    return;
+                }
+                
+                const morse = textToMorse(text);
+                const art = generateMorseArt(morse);
+                
+                morseArtResult.innerHTML = `<pre>${art}</pre>`;
+            });
+            
+            function generateMorseArt(morse) {
+                let art = "";
+                for (let i = 0; i < morse.length; i++) {
+                    const char = morse[i];
+                    if (char === '.') {
+                        art += "● ";
+                    } else if (char === '-') {
+                        art += "▲ ";
+                    } else if (char === ' ') {
+                        art += "   ";
+                    } else if (char === '/') {
+                        art += "\n";
+                    } else {
+                        art += char;
+                    }
+                }
+                return art;
+            }
+            
+            // OSINT Tools - Placeholder implementations
+            document.getElementById('search-phone').addEventListener('click', function() {
+                const phone = document.getElementById('phone-number').value;
+                document.getElementById('phone-result').textContent = 
+                    `Fitur OSINT Numbers memerlukan integrasi dengan API pihak ketiga. Nomor yang dimasukkan: ${phone}`;
+            });
+            
+            document.getElementById('search-email').addEventListener('click', function() {
+                const email = document.getElementById('email-address').value;
+                document.getElementById('email-result').textContent = 
+                    `Fitur OSINT Email memerlukan integrasi dengan API pihak ketiga. Email yang dimasukkan: ${email}`;
+            });
+            
+            document.getElementById('search-passport').addEventListener('click', function() {
+                const passport = document.getElementById('passport-number').value;
+                document.getElementById('passport-result').textContent = 
+                    `Fitur OSINT Passport memerlukan integrasi dengan API pihak ketiga. Passport yang dimasukkan: ${passport}`;
+            });
+            
+            document.getElementById('search-password').addEventListener('click', function() {
+                const hash = document.getElementById('password-hash').value;
+                document.getElementById('password-hash-result').textContent = 
+                    `Fitur OSINT Password memerlukan integrasi dengan database hash. Hash yang dimasukkan: ${hash}`;
+            });
+            
+            document.getElementById('search-location').addEventListener('click', function() {
+                const coords = document.getElementById('location-coords').value;
+                document.getElementById('location-result').textContent = 
+                    `Fitur OSINT Location memerlukan integrasi dengan API peta. Koordinat yang dimasukkan: ${coords}`;
+            });
+            
+            // Phishing Link Generator
+            document.getElementById('generate-phishing').addEventListener('click', function() {
+                const url = document.getElementById('original-url').value;
+                const domain = document.getElementById('phishing-domain').value || "secure-login";
+                
+                if (!url) {
+                    document.getElementById('phishing-result').textContent = "Masukkan URL terlebih dahulu.";
+                    return;
+                }
+                
+                // Generate a simple phishing-like URL (for educational purposes only)
+                const phishingUrl = `https://${domain}.com/login?redirect=${encodeURIComponent(url)}`;
+                
+                document.getElementById('phishing-result').innerHTML = 
+                    `URL Phishing Simulasi (Edukasi): <br><a href="#" onclick="return false;">${phishingUrl}</a>`;
+            });
+            
+            // Number Generators
+            document.getElementById('generate-numbers').addEventListener('click', function() {
+                const start = parseInt(document.getElementById('range-start').value);
+                const end = parseInt(document.getElementById('range-end').value);
+                const type = document.querySelector('input[name="number-type"]:checked').value;
+                
+                if (isNaN(start) || isNaN(end) || start >= end) {
+                    document.getElementById('number-result').textContent = "Masukkan range yang valid.";
+                    return;
+                }
+                
+                let numbers = [];
+                let ganjil = [];
+                let genap = [];
+                
+                for (let i = start; i <= end; i++) {
+                    if (i % 2 === 0) {
+                        genap.push(i);
+                    } else {
+                        ganjil.push(i);
+                    }
+                }
+                
+                if (type === 'ganjil') {
+                    numbers = ganjil;
+                } else if (type === 'genap') {
+                    numbers = genap;
+                } else {
+                    numbers = [`Ganjil: ${ganjil.join(', ')}`, `Genap: ${genap.join(', ')}`];
+                }
+                
+                document.getElementById('number-result').textContent = Array.isArray(numbers) ? numbers.join(', ') : numbers;
+            });
+            
+            document.getElementById('generate-prima').addEventListener('click', function() {
+                const limit = parseInt(document.getElementById('prima-limit').value);
+                
+                if (isNaN(limit) || limit < 2) {
+                    document.getElementById('prima-result').textContent = "Masukkan batas yang valid (minimal 2).";
+                    return;
+                }
+                
+                const primes = generatePrimes(limit);
+                document.getElementById('prima-result').textContent = primes.join(', ');
+            });
+            
+            function generatePrimes(limit) {
+                const primes = [];
+                const isPrime = new Array(limit + 1).fill(true);
+                isPrime[0] = isPrime[1] = false;
+                
+                for (let i = 2; i <= limit; i++) {
+                    if (isPrime[i]) {
+                        primes.push(i);
+                        for (let j = i * i; j <= limit; j += i) {
+                            isPrime[j] = false;
+                        }
+                    }
+                }
+                
+                return primes;
+            }
+            
+            document.getElementById('generate-phi').addEventListener('click', function() {
+                const iterations = parseInt(document.getElementById('phi-iterations').value);
+                
+                if (isNaN(iterations) || iterations < 1) {
+                    document.getElementById('phi-result').textContent = "Masukkan jumlah iterasi yang valid.";
+                    return;
+                }
+                
+                let phi = 1;
+                for (let i = 0; i < iterations; i++) {
+                    phi = 1 + 1 / phi;
+                }
+                
+                document.getElementById('phi-result').textContent = `Nilai Phi setelah ${iterations} iterasi: ${phi}`;
+            });
+            
+            document.getElementById('generate-gr').addEventListener('click', function() {
+                const iterations = parseInt(document.getElementById('gr-iterations').value);
+                
+                if (isNaN(iterations) || iterations < 1) {
+                    document.getElementById('gr-result').textContent = "Masukkan jumlah iterasi yang valid.";
+                    return;
+                }
+                
+                let a = 1;
+                let b = 1;
+                let result = "1, 1";
+                
+                for (let i = 2; i < iterations; i++) {
+                    const next = a + b;
+                    result += `, ${next}`;
+                    a = b;
+                    b = next;
+                }
+                
+                const goldenRatio = iterations > 1 ? b / a : 1;
+                
+                document.getElementById('gr-result').textContent = 
+                    `Deret Fibonacci: ${result}\nRasio Emas: ${goldenRatio}`;
+            });
         });
     </script>
 </body>
